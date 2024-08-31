@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ChessLite.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ChessLite.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="ChessLite">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    <ItemsControl x:Name="Root" ItemsSource="{Binding Squares}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <UniformGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="800" Height="800"
+                             Columns="8" Rows="8" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Button
+                    Grid.Row="{Binding X}"
+                    Grid.Column="{Binding Y}"
+                    Width="100"
+                    Height="100"
+                    Margin="0"
+                    Background="{Binding Background}"
+                    Command="{Binding #Root.((vm:MainWindowViewModel)DataContext).UpdatePreviousCommand}" 
+                    CommandParameter="{Binding XY}">
+                    <Svg
+                        IsVisible="{Binding HasPiece}"
+                        Path="{Binding Path}" />
+                </Button>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</Window>
